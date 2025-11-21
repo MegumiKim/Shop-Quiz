@@ -5,9 +5,9 @@ import { useShop } from "../contexts/MyShopContext";
 function Shop() {
   const { items, reset } = useShop();
 
-  console.log(items.length);
   return (
     <div className="shop-wrapper">
+
       <div className="shelf">
         {items.map((item) => (
           <ProductCard item={item} key={item.id} />

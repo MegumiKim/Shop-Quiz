@@ -6,12 +6,13 @@ import React, {
   useRef,
 } from "react";
 import { Product } from "./MyShopType";
-import { shopItems } from "../shopItems";
+import { inventories } from "../inventories";
 
 const number_of_items = 9;
 
 export interface ShopContextType {
   items: Product[];
+setShopItems: React.Dispatch<React.SetStateAction<Product[]>>;
   // addItem: (product: Product) => void;
   removeItem: (id: number) => void;
   refill: (id: number) => void;
@@ -33,15 +34,15 @@ export const MyShopContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [items, setItems] = useState<Product[]>(shopItems);
+  const [shopItems, setShopItems] = useState<Product[]>(inventories);
   const remainsRef = useRef<Product[]>([]);
 
   const removeItem = (id: number) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+    setShopItems((prev) => prev.filter((i) => i.id !== id));
   };
 
   const refill = (id: number) => {
-    setItems((prevItems) => {
+    setShopItems((prevItems) => {
       //find the index of clicked item
       const index = prevItems.findIndex((i) => i.id === id);
       if (index === -1) return prevItems; //item not found
@@ -58,24 +59,24 @@ export const MyShopContextProvider = ({
   };
 
   const reset = () => {
-    const shuffled = [...shopItems].sort(() => Math.random() - 0.5);
+    const shuffled = [...inventories].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 9);
     const remains = shuffled.slice(9);
 
-    setItems(selected);
+    setShopItems(selected);
     remainsRef.current = remains;
   };
 
   useEffect(() => {
-    const shuffled = [...shopItems].sort(() => Math.random() - 0.5);
+    const shuffled = [...inventories].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 9);
     const remains = shuffled.slice(9);
 
-    setItems(selected);
+    setShopItems(selected);
     remainsRef.current = remains;
   }, []);
 
-  const value = { items, refill, removeItem, reset };
+  const value = { items: shopItems, setShopItems, refill, removeItem, reset };
   return (
     <MyShopContext.Provider value={value}>{children}</MyShopContext.Provider>
   );

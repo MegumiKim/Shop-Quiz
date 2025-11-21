@@ -6,7 +6,7 @@ function Points() {
 
   return (
     <h3 className="my_point">
-      Mine Poenger ⭐ <span className="point">{point}</span>
+     ⭐ <span className="point">{point}</span>
     </h3>
   );
 }

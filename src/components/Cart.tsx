@@ -10,9 +10,9 @@ function Cart() {
       {items.map((item) => (
         <Thumbnail item={item} key={item.id} />
       ))}
-      <button onClick={emptyCart} className="clear_btn">
+      {/* <button onClick={emptyCart} className="clear_btn">
         Tom
-      </button>
+      </button> */}
     </div>
   );
 }

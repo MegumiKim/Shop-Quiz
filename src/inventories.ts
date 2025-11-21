@@ -1,4 +1,4 @@
-export const shopItems = [
+export const inventories = [
   {
     id: 1,
     name: "Sjokolade",
@@ -14,7 +14,7 @@ export const shopItems = [
   {
     id: 3,
     name: "veske",
-    price: 50,
+    price: 200,
     img: "bag.jpg",
   },
   {
@@ -26,13 +26,13 @@ export const shopItems = [
   {
     id: 5,
     name: "ring",
-    price: 189,
+    price: 400,
     img: "ring.png",
   },
   {
     id: 6,
     name: "donuts",
-    price: 25,
+    price: 40,
     img: "donut.jpg",
   },
   {
@@ -56,49 +56,49 @@ export const shopItems = [
   {
     id: 10,
     name: "egg",
-    price: 55,
+    price: 60,
     img: "egg.png",
   },
   {
     id: 11,
     name: "bok",
-    price: 36,
+    price: 150,
     img: "book.jpg",
   },
   {
     id: 12,
     name: "kake",
-    price: 69,
+    price: 120,
     img: "kake.jpg",
   },
   {
     id: 13,
     name: "pizza",
-    price: 79,
+    price: 250,
     img: "pizza.png",
   },
   {
     id: 14,
     name: "Kjeks",
-    price: 30,
+    price: 50,
     img: "cookie.jpg",
   },
   {
     id: 15,
     name: "gave",
-    price: 265,
+    price: 300,
     img: "present.png",
   },
   {
     id: 16,
     name: "bryant",
-    price: 40,
+    price: 100,
     img: "pencils.jpg",
   },
   {
     id: 17,
     name: "sushi",
-    price: 129,
+    price: 180,
     img: "sushi.png",
   },
   {

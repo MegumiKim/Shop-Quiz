@@ -9,7 +9,8 @@ function Thumbnail({ item }: Prop) {
   const { removeItem } = useCart();
 
   return (
-    <button className="thumbnail_wrapper" onClick={() => removeItem(item.id)}>
+    <button className="thumbnail_wrapper" onClick={() => removeItem(item)}>
+      <p className="removeBtn">❎</p>
       <img src={`/${item.img}`} alt={item.name} className="thumbnail" />
       <p className="thumbnail_price">NOK {item.price}</p>
     </button>
