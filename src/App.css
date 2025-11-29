@@ -18,15 +18,22 @@ padding: 1rem;
 }
 
 h1{
-  margin-top: 0;
+  font-size: 3rem;
+  margin: 0;
 }
+
+.reset_wrapper{
+
+}
+
 .reset_btn {
   all: unset;
   border: var(--color-primary) solid 3px;
   color: var(--color-primary);
   padding: 10px;
   text-align: center;
-  margin: 0;
+  margin: auto;
+  text-align: center;
   cursor: pointer;
   border-radius: 5px;
   font-weight: 600;
@@ -48,7 +55,9 @@ h1{
   color: var(--color-primary);
 }
 .shop-wrapper {
-  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .mainWrapper {
@@ -108,7 +117,18 @@ h3 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  /* gap: 1em; */
+}
+
+h2{
+  margin-top: 0;
+}
+
+.currentAmount{
+  font-size: 3rem;
+  color: var(--color-primary);
+  line-height: 20px;
+  margin: 0;
 }
 
 .cart {
@@ -123,7 +143,8 @@ h3 {
   flex-wrap: wrap;
   padding: 1em;
   position: relative;
-  margin: 0 2em;
+  margin: 0;
+  margin-bottom: 20px;
 }
 .clear_btn {
   all: unset;
@@ -153,6 +174,7 @@ h3 {
   justify-content: end;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 .thumbnail_wrapper:hover {
@@ -214,7 +236,8 @@ label {
 }
 
 .user-message {
-  font-size: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   text-transform: uppercase;
   max-width: 400px;
   margin: 0 auto;
@@ -222,6 +245,7 @@ label {
 
 .user-sub-message{
   margin: 0 auto;
+  line-height: 0;
 }
 
 .amount_input {

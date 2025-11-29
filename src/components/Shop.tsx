@@ -7,18 +7,19 @@ function Shop() {
 
   return (
     <div className="shop-wrapper">
-
+        <h2>Hva vil du kjøpe i dag? 🛒 </h2>
       <div className="shelf">
         {items.map((item) => (
           <ProductCard item={item} key={item.id} />
         ))}
-
-        {items.length < 1 && (
-          <button className="reset_btn" onClick={reset}>
-            START PÅ NYTT
-          </button>
-        )}
       </div>
+        <div className="reset_wrapper">
+          {items.length < 1 && (
+            <button className="reset_btn" onClick={reset}>
+              FYLL OPP
+            </button>
+          )}
+        </div>
     </div>
   );
 }

@@ -3,32 +3,35 @@ import { useCart } from "../contexts/MyCartContext";
 import { usePoint } from "../contexts/PointContext";
 import Confetti from "react-confetti";
 
-function QuizForm() {
+
+interface Prop {
+  currentAmount:number
+  setQuizIndex: React.Dispatch<React.SetStateAction<number>>;
+}
+
+function QuizForm({currentAmount, setQuizIndex}:Prop) {
   const { items, emptyCart } = useCart();
-  const quizArr = [50, 100, 150, 200, 300, 450, 520, 618];
-  const [quizIndex, setQuizIndex] = useState<number>(0);
-  const currentAmount = quizArr[quizIndex];
   const { setPoint } = usePoint();
   const [input, setInput] = useState<number | string>("");
   const [invalid, setInvalid] = useState(false);
-  const [userMessage, setUserMessage] = useState(`Du har ${currentAmount} Kr.`);
-  const defaultSubMessage = "Regn hvor mye penger du får tilbake.";
-  const [userSubMessage, setUserSubMessage] = useState(defaultSubMessage);
+  const defaultMessage = "Hvor mye penger får du tilbake?";
+  const [userSubMessage, setUserSubMessage] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [showConfetti, setShowConfetti] = useState(false);
+  const sum = items.reduce((acc, curr) => acc + curr.price, 0);
+  const change = currentAmount - sum;
+  const [userMessage, setUserMessage] = useState(defaultMessage);
+
 
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setInvalid(false);
 
-    const sum = items.reduce((acc, curr) => acc + curr.price, 0);
-    const change = currentAmount - sum;
-
     if(sum > currentAmount){
       setInvalid(true);
       setUserMessage("Du har ikke nok penger.");
-      setUserSubMessage(`Du kan kjøpe opp til Kr. ${currentAmount}.`)
+      setUserSubMessage(`Fjern noen varene`)
       return;
     }
 
@@ -36,17 +39,18 @@ function QuizForm() {
       setUserMessage("Riktig 🎉");
       setUserSubMessage("Du har fått 1 poeng ⭐");
       setPoint((prev) => prev + 1);
-      setQuizIndex((prev) => prev + 1);
       setBtnDisabled(true);
       setShowConfetti(true);
   
       setTimeout(() => {
         //reset the quiz form for the next round
-       setUserMessage(`Du har ${quizArr[quizIndex + 1]} Kr.`);
-       setUserSubMessage(defaultSubMessage);
+    
+        setQuizIndex((prev:number) => prev + 1);
+        setUserMessage(defaultMessage);
+        setUserSubMessage("");
         emptyCart();
         setShowConfetti(false);
-           setInput("");
+        setInput("");
       }, 6000); // Hide confetti after 7 seconds
     } else {
       setUserMessage("Feil 😭");
@@ -55,8 +59,6 @@ function QuizForm() {
       setBtnDisabled(true);
       setInput("");
     }
- 
-     
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,8 +79,6 @@ function QuizForm() {
       setBtnDisabled(true);
     }
     setInvalid(false);
-    setUserMessage(`Du har ${currentAmount} Kr.`);
-    setUserSubMessage(defaultSubMessage);
     setInput("");
   };
 
@@ -93,7 +93,7 @@ function QuizForm() {
           <input
             type="text"
             name="amount"
-            // placeholder="SKRIV INN BELØPET"
+            // placeholder="0"
             className={invalid ? "invalid amount_input" : "amount_input"}
             onChange={handleChange}
             onFocus={handleFocus}
