@@ -1,4 +1,5 @@
-import { ShoppingAction, ShoppingState } from "../contexts/ShoppingTypes";
+import { ShoppingAction, ShoppingState } from "../../contexts/ShoppingTypes";
+
 
 export const shoppingReducer = (
   state: ShoppingState,

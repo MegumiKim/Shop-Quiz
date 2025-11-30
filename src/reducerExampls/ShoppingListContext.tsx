@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useReducer } from "react";
-import { initialItems } from "../initialValues";
-import { ShoppingAction, ShoppingItem, ShoppingState } from "./ShoppingTypes";
-import { shoppingReducer } from "../reducers/ShoppingReducer";
+import { initialItems } from "./initialValues";
+import { ShoppingAction, ShoppingItem, ShoppingState } from "../contexts/ShoppingTypes";
+import { shoppingReducer } from "./reducers/ShoppingReducer";
 
 const initialState: ShoppingState = {
   items: initialItems,

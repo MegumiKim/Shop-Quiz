@@ -91,7 +91,7 @@ const throwError = (msg:string, sub = "")=>{
     }
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleFocus = () => {
     setInvalid(false);
   };
 

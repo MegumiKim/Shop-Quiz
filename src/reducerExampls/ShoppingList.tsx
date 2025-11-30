@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 
 import ItemCard from "./ItemCard";
-import { debounce } from "../tools/debounce";
-import { ShoppingListContext } from "../contexts/ShoppingListContext";
+
+import { ShoppingListContext } from "./ShoppingListContext";
 import { ShoppingItem } from "../contexts/ShoppingTypes";
+import { debounce } from "../tools/debounce";
 
 function ShoppingList() {
   const { items, dispatch } = useContext(ShoppingListContext);

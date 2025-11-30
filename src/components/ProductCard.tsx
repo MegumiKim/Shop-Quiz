@@ -9,7 +9,6 @@ interface Prop {
 
 function ProductCard({ item }: Prop) {
   const { addItem } = useCart();
-
   const { refill } = useShop();
 
   const handleClick = () => {

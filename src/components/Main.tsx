@@ -18,7 +18,7 @@ function Main() {
         </div>
         <div className="page_right">
           <h2 className="">
-            {currentAmount ? <>Du har <span className="currentAmount">{currentAmount} </span>kroner.</> : "Hurray! Du klarte alt 🎉🎉"}
+            Du har <span className="currentAmount">{currentAmount} </span>kroner.
           </h2>
           <Cart />
           <QuizForm currentAmount={currentAmount} quizIndex={quizIndex} setQuizIndex={setQuizIndex}/>
