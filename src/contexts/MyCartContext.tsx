@@ -31,7 +31,7 @@ export const MyCartContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [cartItems, setCartItems] = useState<Product[]>([]);
-const {setShopItems} = useShop();
+const {setShopItems, returnItem} = useShop();
 
   const addItem = (product: Product) => {
     setCartItems((prev) => [...prev, product]);
@@ -39,8 +39,7 @@ const {setShopItems} = useShop();
 
   const removeItem = (product:Product) => {
     setCartItems((prev) => prev.filter((i) => i.id !== product.id));
-    setShopItems((prev) => [...prev, product])
-
+    returnItem(product);
   };
 
   const emptyCart = () => setCartItems([]);

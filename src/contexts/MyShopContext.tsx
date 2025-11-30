@@ -8,13 +8,14 @@ import React, {
 import { Product } from "./MyShopType";
 import { inventories } from "../inventories";
 
-const number_of_items = 9;
+
 
 export interface ShopContextType {
   items: Product[];
 setShopItems: React.Dispatch<React.SetStateAction<Product[]>>;
   // addItem: (product: Product) => void;
-  removeItem: (id: number) => void;
+  returnItem: (product: Product) => void;
+  // removeItem: (id: number) => void;
   refill: (id: number) => void;
   reset: () => void;
 }
@@ -29,6 +30,10 @@ export function useShop() {
   }
   return ctx;
 }
+
+
+const DISPLAY_COUNT = 9;
+
 export const MyShopContextProvider = ({
   children,
 }: {
@@ -37,10 +42,44 @@ export const MyShopContextProvider = ({
   const [shopItems, setShopItems] = useState<Product[]>(inventories);
   const remainsRef = useRef<Product[]>([]);
 
-  const removeItem = (id: number) => {
-    setShopItems((prev) => prev.filter((i) => i.id !== id));
-  };
+//Initializes the shop: picks 9 random items + stores rest
 
+const initializeTheShop = () => {
+    const shuffled = [...inventories].sort(() => Math.random() - 0.5);
+    const displayed = shuffled.slice(0, DISPLAY_COUNT);
+    const remains = shuffled.slice(DISPLAY_COUNT);
+
+    setShopItems(displayed);
+    remainsRef.current = remains;
+}
+
+  useEffect(() => {
+    initializeTheShop();
+  }, []);
+
+
+  // Returned items go to the END of the remains queue. Will appear later when refill() is used
+const returnItem = (product:Product) =>{
+
+  
+  setShopItems((prev)=>{
+      // if (prev.length === 0) return prev;
+
+      if (prev.length < 9) return [...prev, product];
+
+          // Put the item that was replaced into remains
+          const lastItem = prev[prev.length - 1];
+          remainsRef.current.push(lastItem);
+
+          const updated = [...prev];
+          updated[updated.length -1 ]= product;
+
+          return updated
+
+        })
+  }
+
+// Replace an item (by id) with the next from remains queue
   const refill = (id: number) => {
     setShopItems((prevItems) => {
       //find the index of clicked item
@@ -58,25 +97,10 @@ export const MyShopContextProvider = ({
     });
   };
 
-  const reset = () => {
-    const shuffled = [...inventories].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 9);
-    const remains = shuffled.slice(9);
+  //Full reset
+  const reset = () => initializeTheShop();
 
-    setShopItems(selected);
-    remainsRef.current = remains;
-  };
-
-  useEffect(() => {
-    const shuffled = [...inventories].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 9);
-    const remains = shuffled.slice(9);
-
-    setShopItems(selected);
-    remainsRef.current = remains;
-  }, []);
-
-  const value = { items: shopItems, setShopItems, refill, removeItem, reset };
+  const value = { items: shopItems, setShopItems, refill, reset, returnItem };
   return (
     <MyShopContext.Provider value={value}>{children}</MyShopContext.Provider>
   );

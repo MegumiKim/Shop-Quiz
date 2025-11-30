@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useCart } from "../contexts/MyCartContext";
 import { usePoint } from "../contexts/PointContext";
 import Confetti from "react-confetti";
@@ -6,80 +6,93 @@ import Confetti from "react-confetti";
 
 interface Prop {
   currentAmount:number
+  quizIndex:number
   setQuizIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function QuizForm({currentAmount, setQuizIndex}:Prop) {
+function QuizForm({currentAmount, quizIndex, setQuizIndex}:Prop) {
   const { items, emptyCart } = useCart();
   const { setPoint } = usePoint();
-  const [input, setInput] = useState<number | string>("");
+
+  //States for UX
+  const [input, setInput] = useState<string>("");
   const [invalid, setInvalid] = useState(false);
-  const defaultMessage = "Hvor mye penger får du tilbake?";
+  const [userMessage, setUserMessage] = useState("Hvor mye penger får du tilbake?");
   const [userSubMessage, setUserSubMessage] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [showConfetti, setShowConfetti] = useState(false);
+
   const sum = items.reduce((acc, curr) => acc + curr.price, 0);
   const change = currentAmount - sum;
-  const [userMessage, setUserMessage] = useState(defaultMessage);
 
 
+//utility for setting errors
+const throwError = (msg:string, sub = "")=>{
+  setInvalid(true);
+  setUserMessage(msg);
+  setUserSubMessage(sub);
+  setBtnDisabled(true);
+  setInput("");
+}
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setInvalid(false);
 
+
+    //Cae: not enough money
     if(sum > currentAmount){
-      setInvalid(true);
-      setUserMessage("Du har ikke nok penger.");
-      setUserSubMessage(`Fjern noen varene`)
-      return;
+      return   throwError("Du har ikke nok penger.", "Fjern noen varene");
     }
 
-    if (change === input) {
+    //convert string input to number
+    const userAnswer = Number(input);
+
+    if (userAnswer === change) {
       setUserMessage("Riktig 🎉");
       setUserSubMessage("Du har fått 1 poeng ⭐");
       setPoint((prev) => prev + 1);
+
       setBtnDisabled(true);
       setShowConfetti(true);
-  
-      setTimeout(() => {
+      
+      const timeout = setTimeout(() => {
         //reset the quiz form for the next round
-    
         setQuizIndex((prev:number) => prev + 1);
-        setUserMessage(defaultMessage);
+        
+        if(currentAmount === 777){
+          setQuizIndex(0) // back to the start
+        }
+
+        setUserMessage("Hvor mye penger får du tilbake?");
         setUserSubMessage("");
         emptyCart();
         setShowConfetti(false);
         setInput("");
-      }, 6000); // Hide confetti after 7 seconds
-    } else {
-      setUserMessage("Feil 😭");
-      setUserSubMessage(`Hva blir ${currentAmount} - ${sum}?`);
-      setInvalid(true);
-      setBtnDisabled(true);
-      setInput("");
-    }
+      }, 1000); // Hide confetti after 5 seconds
+      return () => clearTimeout(timeout);
+
+    } 
+      //wrong answer
+      
+      throwError("Feil 😭",`Hva blir ${currentAmount} - ${sum}?` )
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if(isNaN(Number(e.target.value))){
-      setInvalid(true);
-      setUserMessage("SKRIV BARE TALL");
-      setUserSubMessage("");
-      setInput("")
+    const value = e.target.value;
+
+    //Only allow digits
+    if(!/^\d*$/.test(value)){
+      return throwError("SKTIV BARE TALL");
     }else{
-            setInvalid(false);
-      setInput(Number(e.target.value));
-      setBtnDisabled(false);
+      setInvalid(false);
+      setInput(value);
+      setBtnDisabled(value === "");
     }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setBtnDisabled(true);
-    }
     setInvalid(false);
-    setInput("");
   };
 
   return (
@@ -98,7 +111,7 @@ function QuizForm({currentAmount, setQuizIndex}:Prop) {
             onChange={handleChange}
             onFocus={handleFocus}
             value={input}
-            disabled={items.length < 1 ? true : false}
+            disabled={items.length < 1}
           />
         </div>
         <button className="pay_btn" onClick={handleClick} disabled={btnDisabled}>
