@@ -6,11 +6,10 @@ import Confetti from "react-confetti";
 
 interface Prop {
   currentAmount:number
-  quizIndex:number
   setQuizIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function QuizForm({currentAmount, quizIndex, setQuizIndex}:Prop) {
+function QuizForm({currentAmount, setQuizIndex}:Prop) {
   const { items, emptyCart } = useCart();
   const { setPoint } = usePoint();
 
@@ -69,12 +68,11 @@ const throwError = (msg:string, sub = "")=>{
         emptyCart();
         setShowConfetti(false);
         setInput("");
-      }, 1000); // Hide confetti after 5 seconds
+      }, 3000); // Hide confetti after 3 seconds
       return () => clearTimeout(timeout);
 
     } 
       //wrong answer
-      
       throwError("Feil 😭",`Hva blir ${currentAmount} - ${sum}?` )
   };
 

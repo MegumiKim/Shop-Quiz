@@ -21,7 +21,7 @@ function Main() {
             Du har <span className="currentAmount">{currentAmount} </span>kroner.
           </h2>
           <Cart />
-          <QuizForm currentAmount={currentAmount} quizIndex={quizIndex} setQuizIndex={setQuizIndex}/>
+          <QuizForm currentAmount={currentAmount} setQuizIndex={setQuizIndex}/>
         </div>
       </div>
     </div>
